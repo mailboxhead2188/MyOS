@@ -1,0 +1,45 @@
+#include "system.h"
+
+void serial_enable(int device) {
+  outportb(device + 1, 0x00);
+  outportb(device + 3, 0x80);
+  outportb(device + 0, 0x03);
+  outportb(device + 1, 0x00);
+  outportb(device + 3, 0x03);
+  outportb(device + 2, 0xc7);
+  outportb(device + 4, 0x0b);
+}
+
+void serial_install() {
+  serial_enable(SERIAL_PORT_A);
+  serial_enable(SERIAL_PORT_B);
+}
+
+int serial_rcvd(int device) {
+  return inportb(device + 5) &1;
+}
+
+char serial_recv(int device) {
+  while (serial_rcvd(device) == 0);
+  return (char)inportb(device);
+}
+
+char serial_recv_async(int device) {
+  return inportb(device);
+}
+
+int serial_transmit_empty(int device) {
+  return inportb(device + 5) & 0x20;
+}
+
+void serial_send(int device, char out) {
+  //while(serial_transmit_empty(device) == 0);
+  outportb(device, out);
+}
+
+void serial_string(int device, char * out) {
+  char c = *out;
+  while( c = *out && c != '\0' && c != NULL) {
+    outportb(device, out++);
+  }
+}

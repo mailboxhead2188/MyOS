@@ -1,0 +1,4 @@
+Compilation:
+
+nasm -f elf64 HelloWorld.s
+ld -s -o HelloWorld HelloWorld.o

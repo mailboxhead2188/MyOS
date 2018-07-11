@@ -1,0 +1,16 @@
+#define IDT_SIZE 256
+
+extern void load_idt(unsigned long *idt_ptr);
+
+struct IDT_entry {
+  unsigned short int offset_lowerbits;
+  unsigned short int selector;
+  unsigned char zero;
+  unsigned char type_attr;
+  unsigned short int offset_higherbits;
+};
+
+struct IDT_entry IDT[IDT_SIZE];
+
+void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
+void idt_install(void);

@@ -1,0 +1,22 @@
+#include "system.h"
+
+void kmain(void)
+{
+  const char *str = "Welcome to the kernel";
+  const char *a20 = "Protected mode enabled";
+  const char *a20Fail = "Moving to protected mode failed!";
+
+  clear_screen();
+  gdt_install(); 
+  idt_install();
+  isrs_install();
+  irq_install();
+  kb_install();
+  timer_install();  
+  serial_install();
+  
+  kprint(str);
+  kprint_newline();
+  
+  while(1);
+}
